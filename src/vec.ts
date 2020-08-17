@@ -1,4 +1,4 @@
-import { vec3 } from './types.ts'
+import { Vec2, Vec3, Vec4 } from './types.ts'
 
 type VecType = Array<number>
 
@@ -6,6 +6,10 @@ function validLength(v1: VecType, v2: VecType) {
     if (v1.length !== v2.length) {
         throw '两个向量的长度不一致'
     }
+}
+
+export function zero() {
+    return [0.0, 0.0, 0.0]
 }
 
 export function size(v: VecType) {
@@ -42,7 +46,7 @@ export function theta(v1: VecType, v2: VecType) {
     return Math.acos(val)
 }
 
-export function cross(v1: vec3, v2: vec3) {
+export function cross(v1: Vec3, v2: Vec3) {
     validLength(v1, v2)
     if (v1.length !== 3) {
         throw '叉乘计算限定维度为3'
@@ -51,3 +55,15 @@ export function cross(v1: vec3, v2: vec3) {
 }
 
 export function distance() {}
+
+export function vec2(): Vec2 {
+    return [0.0, 0.0]
+}
+
+export function vec3(): Vec3 {
+    return [0.0, 0.0, 0.0]
+}
+
+export function vec4(): Vec4 {
+    return [0.0, 0.0, 0.0, 0.0]
+}

@@ -1,7 +1,9 @@
-export type vec2 = [number, number]
-export type vec3 = [number, number, number]
-export type vec4 = [number, number, number, number]
+export type Vec = Array<number>
+export type Vec2 = [number, number]
+export type Vec3 = [number, number, number]
+export type Vec4 = [number, number, number, number]
 
-export type mat2 = [vec2, vec2]
-export type mat3 = [vec3, vec3, vec3]
-export type mat4 = [vec4, vec4, vec4, vec4]
+export type Mat = Array<Vec>
+export type Mat2 = [Vec2, Vec2]
+export type Mat3 = [Vec3, Vec3, Vec3]
+export type Mat4 = [Vec4, Vec4, Vec4, Vec4]
