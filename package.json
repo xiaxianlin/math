@@ -6,5 +6,8 @@
     "dependencies": {
         "deno_ls_plugin": "^0.1.0",
         "typescript": "^3.9.7"
+    },
+    "scripts": {
+        "test": "deno test"
     }
 }
