@@ -9,5 +9,3 @@ import { Vec3, Mat, Vec } from './src/types.ts'
 // const point = [10, 20, 10]
 // console.log(Matrix.multi(projectionMartix, point))
 // console.log(Matrix.multi(scaleMatrix, point))
-
-console.log(Triangle.cos(180))

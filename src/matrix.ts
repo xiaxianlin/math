@@ -242,3 +242,37 @@ export function minor(m: Mat, i: number, j: number): Mat {
  * 代数余子式
  */
 export function cofactor(m: Mat, i: number, j: number) {}
+
+export function toEulerAngle(m: Mat3): Vec3 {
+    // 以弧度形式计算欧拉角
+    let h: number, p: number, b: number
+    let [m11, m12, m13] = m[0]
+    let [m21, m22, m23] = m[1]
+    let [m31, m32, m33] = m[2]
+
+    // 从m23计算pitch，小心asin()的域错误，因为浮点计算，允许一定误差
+    let sp = -m23
+
+    if (sp <= -0.1) {
+        p = Math.PI / -2
+    } else if (sp >= 1.0) {
+        p = Math.PI / 2
+    } else {
+        p = Math.asin(sp)
+    }
+
+    // 检查万向锁，允许一些误差
+    if (sp > 0.9999) {
+        // 从正上或正下看
+        // 将bank置零，赋值给heading
+        b = 0.0
+        h = Math.atan2(-m31, m11)
+    } else {
+        // 通过m13和m33计算heading
+        h = Math.atan2(m13, m33)
+        // 通过m21和m22计算bank
+        b = Math.atan2(m21, m22)
+    }
+
+    return [h, p, b]
+}

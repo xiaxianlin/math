@@ -1,4 +1,4 @@
-import { Vec4, Vec } from './types.ts'
+import { Vec4, Vec, Mat3 } from './types.ts'
 
 export function exp(q: Vec4, t: number): Vec4 {
     let [w, x, y, z] = q
@@ -55,4 +55,13 @@ export function slerp(v1: Vec4, v2: Vec4, t: number): Vec4 {
     z = z0 * k0 + z1 * k1
 
     return [w, x, y, z]
+}
+
+export function toMatrix(q: Vec4): Mat3 {
+    let [w, x, y, z] = q
+    return [
+        [1 - 2 * y * y - 2 * z * z, 2 * x * y + 2 * w * z, 2 * x * z - 2 * w * y],
+        [2 * x * y - 2 * w * z, 1 - 2 * x * x - 2 * z * z, 2 * y * z + 2 * w * x],
+        [2 * x * z + 2 * w * y, 2 * y * z - 2 * w * x, 1 - 2 * x * x - 2 * y * y]
+    ]
 }
