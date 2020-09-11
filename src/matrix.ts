@@ -253,7 +253,7 @@ export function toEulerAngle(m: Mat3): Vec3 {
     // 从m23计算pitch，小心asin()的域错误，因为浮点计算，允许一定误差
     let sp = -m23
 
-    if (sp <= -0.1) {
+    if (sp <= -1.0) {
         p = Math.PI / -2
     } else if (sp >= 1.0) {
         p = Math.PI / 2
@@ -265,8 +265,8 @@ export function toEulerAngle(m: Mat3): Vec3 {
     if (sp > 0.9999) {
         // 从正上或正下看
         // 将bank置零，赋值给heading
-        b = 0.0
         h = Math.atan2(-m31, m11)
+        b = 0.0
     } else {
         // 通过m13和m33计算heading
         h = Math.atan2(m13, m33)
@@ -275,4 +275,68 @@ export function toEulerAngle(m: Mat3): Vec3 {
     }
 
     return [h, p, b]
+}
+
+export function toQuternion(m: Mat3): Vec4 {
+    let x: number = 0,
+        y: number = 0,
+        z: number = 0,
+        w: number = 0
+    let [m11, m12, m13] = m[0]
+    let [m21, m22, m23] = m[1]
+    let [m31, m32, m33] = m[2]
+
+    let fourWSquareMinus1 = m11 + m22 + m33
+    let fourXSquareMinus1 = m11 - m22 - m33
+    let fourYSquareMinus1 = m22 - m11 - m33
+    let fourZSquareMinus1 = m33 - m11 - m22
+
+    let biggestIndex = 0
+    let fourBiggestSquareMinus1 = fourWSquareMinus1
+    if (fourXSquareMinus1 > fourBiggestSquareMinus1) {
+        fourBiggestSquareMinus1 = fourXSquareMinus1
+        biggestIndex = 1
+    }
+
+    if (fourYSquareMinus1 > fourBiggestSquareMinus1) {
+        fourBiggestSquareMinus1 = fourYSquareMinus1
+        biggestIndex = 2
+    }
+
+    if (fourZSquareMinus1 > fourBiggestSquareMinus1) {
+        fourBiggestSquareMinus1 = fourZSquareMinus1
+        biggestIndex = 3
+    }
+
+    let biggestVal = Math.sqrt(fourBiggestSquareMinus1 + 1.0) * 0.5
+    let mult = 0.25 / biggestVal
+
+    switch (biggestIndex) {
+        case 0:
+            w = biggestVal
+            x = (m23 - m32) * mult
+            y = (m31 - m13) * mult
+            z = (m12 - m21) * mult
+            break
+        case 1:
+            x = biggestVal
+            w = (m23 - m32) * mult
+            y = (m12 + m21) * mult
+            z = (m31 + m13) * mult
+            break
+        case 2:
+            y = biggestVal
+            w = (m31 - m13) * mult
+            x = (m12 + m21) * mult
+            z = (m23 + m32) * mult
+            break
+        case 3:
+            z = biggestVal
+            w = (m12 - m21) * mult
+            x = (m31 + m13) * mult
+            y = (m23 + m32) * mult
+            break
+    }
+
+    return [w, x, y, z]
 }

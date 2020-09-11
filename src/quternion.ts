@@ -1,4 +1,4 @@
-import { Vec4, Vec, Mat3 } from './types.ts'
+import { Vec4, Vec, Mat3, Vec3 } from './types.ts'
 
 export function exp(q: Vec4, t: number): Vec4 {
     let [w, x, y, z] = q
@@ -64,4 +64,22 @@ export function toMatrix(q: Vec4): Mat3 {
         [2 * x * y - 2 * w * z, 1 - 2 * x * x - 2 * z * z, 2 * y * z + 2 * w * x],
         [2 * x * z + 2 * w * y, 2 * y * z - 2 * w * x, 1 - 2 * x * x - 2 * y * y]
     ]
+}
+
+export function toEularAngle(q: Vec4): Vec3 {
+    let h: number, p: number, b: number
+    let [w, x, y, z] = q
+
+    let sp = -2.0 * (y * z + w * x)
+    if (Math.abs(sp) > 0.9999) {
+        p = (Math.PI / 2) * sp
+        h = Math.atan2(-x * z - w * y, 0.5 - y * y - z * z)
+        b = 0.0
+    } else {
+        p = Math.asin(sp)
+        h = Math.atan2(x * z - w * y, 0.5 - x * x - y * y)
+        b = Math.atan2(x * y - w * z, 0.5 - x * x - z * z)
+    }
+
+    return [h, p, b]
 }
