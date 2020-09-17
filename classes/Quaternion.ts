@@ -1,7 +1,6 @@
-import Vectror3 from './Vector3.ts'
+import Vector3 from './Vector3.ts'
 import EulerAngles from './EulerAngles.ts'
 import MathUtil from './MathUtil.ts'
-import { Vec4 } from '../src/types.ts'
 
 const { sin, cos, abs, sqrt, atan2, acos } = Math
 const { sinCos, safeAcos } = MathUtil
@@ -166,11 +165,11 @@ class Quaternion {
         let sinThetaOver2Sq = 1.0 - this.w * this.w
         if (sinThetaOver2Sq <= 0.0) {
             // 单位四元数或不基精确的数值，只要返回有效向量即可
-            return new Vectror3(1.0, 0.0, 0.0)
+            return new Vector3(1.0, 0.0, 0.0)
         }
 
         let oneOverSinThetaOver2 = 1.0 / sqrt(sinThetaOver2Sq)
-        return new Vectror3(this.x * oneOverSinThetaOver2, this.y * oneOverSinThetaOver2, this.z * oneOverSinThetaOver2)
+        return new Vector3(this.x * oneOverSinThetaOver2, this.y * oneOverSinThetaOver2, this.z * oneOverSinThetaOver2)
     }
 
     /**
@@ -206,7 +205,7 @@ class Quaternion {
     /**
      * 构造执行旋转的四元数：任意轴
      */
-    public setToRotateAboutAxis(axis: Vectror3, theta: number) {
+    public setToRotateAboutAxis(axis: Vector3, theta: number) {
         if (abs(axis.mag() - 1.0) < 0.01) {
             throw '旋转轴必须标准化'
         }

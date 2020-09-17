@@ -1,6 +1,6 @@
 import Matrix4x3 from './Matrix4x3.ts'
 
-class Vectror3 {
+class Vector3 {
     public x: number = 0.0
     public y: number = 0.0
     public z: number = 0.0
@@ -10,24 +10,28 @@ class Vectror3 {
         this.z = z
     }
 
+    public toArray() {
+        return [this.x, this.y, this.z]
+    }
+
     public zero() {
         this.x = this.y = this.z = 0.0
     }
 
-    public add(v: Vectror3) {
-        return new Vectror3(this.x + v.x, this.y + v.y, this.z + v.z)
+    public add(v: Vector3) {
+        return new Vector3(this.x + v.x, this.y + v.y, this.z + v.z)
     }
 
-    public minus(v: Vectror3) {
-        return new Vectror3(this.x - v.x, this.y - v.y, this.z - v.z)
+    public minus(v: Vector3) {
+        return new Vector3(this.x - v.x, this.y - v.y, this.z - v.z)
     }
 
     public multi(k: number) {
-        return new Vectror3(this.x * k, this.y * k, this.z * k)
+        return new Vector3(this.x * k, this.y * k, this.z * k)
     }
 
     public multiWithMartix(m: Matrix4x3) {
-        return new Vectror3(
+        return new Vector3(
             this.x * m.m11 + this.y * m.m21 + this.z * m.m31,
             this.x * m.m12 + this.y * m.m22 + this.z * m.m32,
             this.x * m.m13 + this.y * m.m23 + this.z * m.m33
@@ -39,15 +43,15 @@ class Vectror3 {
         return this.multi(k)
     }
 
-    public cross(v: Vectror3) {
-        return new Vectror3(this.y * v.z - this.z * v.y, this.z * v.x - this.x * v.z, this.x * v.y - this.y * v.x)
+    public cross(v: Vector3) {
+        return new Vector3(this.y * v.z - this.z * v.y, this.z * v.x - this.x * v.z, this.x * v.y - this.y * v.x)
     }
 
     public mag() {
         return Math.sqrt(this.x * this.x + this.y * this.y + this.z * this.z)
     }
 
-    public dot(v: Vectror3) {
+    public dot(v: Vector3) {
         return this.x * v.x + this.y * v.y + this.z * v.z
     }
 
@@ -61,7 +65,7 @@ class Vectror3 {
         }
     }
 
-    public distance(v: Vectror3) {
+    public distance(v: Vector3) {
         let dx = this.x - v.x
         let dy = this.y - v.y
         let dz = this.z - v.z
@@ -69,4 +73,4 @@ class Vectror3 {
     }
 }
 
-export default Vectror3
+export default Vector3

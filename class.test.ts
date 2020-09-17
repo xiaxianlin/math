@@ -1,51 +1,27 @@
-import Quaternion from './classes/Quaternion.ts'
-import Matrix4x3 from './classes/Matrix4x3.ts'
-import RotationMatrix from './classes/RotationMatrix.ts'
-import EulerAngles from './classes/EulerAngles.ts'
 import Vector3 from './classes/Vector3.ts'
+import Utils from './classes/Utils.ts'
 
-const q = new Quaternion(0.5, 0.8, -0.2, 0.5)
-console.log('quternion:', q.toArray())
+let p1 = new Vector3(6, 10, -2)
+let p2 = new Vector3(3, -1, 17)
+let p3 = new Vector3(-9, 8, 0)
 
-q.normalize()
-console.log('normalize:', q.toArray())
+// let n = Utils.getPlaneByTriangle([p1, p2, p3])
 
-console.log('\n/*quternion -> martrix -> angle -> quternion*/')
+// console.log(n.toArray())
 
-const m1 = new RotationMatrix()
-m1.fromInertialToObjectQuaternion(q)
-console.log('rotate matrix:', m1.toArray())
+// console.log(p1.dot(n))
+// console.log(p2.dot(n))
+// console.log(p3.dot(n))
 
-const m431 = new Matrix4x3()
-m431.setupParentToLocalByRotationMatrix(new Vector3(), m1)
-console.log('matrix 4x3:', m431.toArray())
+let e3 = p2.minus(p1)
+console.log('e3', e3.toArray())
+let e1 = p3.minus(p2)
+console.log('e1', e1.toArray())
 
-const a1 = new EulerAngles()
-a1.fromInertialToObjectMatrix(m431)
-console.log('euler angle:', a1.toArray())
+let t = e3.cross(e1)
+console.log('t', t.toArray())
+console.log('n', t.divide(t.mag()).toArray())
 
-const q1 = new Quaternion()
-q1.setToRotateInertialToObject(a1)
-console.log('eulerAngleToQuternion', q1.toArray())
-
-console.log('\n/*quternion -> angle -> matrix -> quternion*/')
-
-const a2 = new EulerAngles()
-a2.fromInertialToObjectQuaternion(q)
-console.log('angle:', a2.toArray())
-
-const m2 = new RotationMatrix()
-m2.setup(a2)
-console.log('rotate matrix:', m2.toArray())
-
-const m432 = new Matrix4x3()
-m432.setupParentToLocalByRotationMatrix(new Vector3(), m2)
-console.log('matrix 4x3:', m432.toArray())
-
-const a3 = new EulerAngles()
-a3.fromInertialToObjectMatrix(m432)
-console.log('angle:', a3.toArray())
-
-const q2 = new Quaternion()
-q2.setToRotateInertialToObject(a2)
-console.log('quternion:', q2.toArray())
+console.log(p1.dot(t))
+console.log(p2.dot(t))
+console.log(p3.dot(t))

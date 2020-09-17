@@ -1,6 +1,6 @@
 import EulerAngles from './EulerAngles.ts'
 import Quaternion from './Quaternion.ts'
-import Vectror3 from './Vector3.ts'
+import Vector3 from './Vector3.ts'
 import MathUtil from './MathUtil.ts'
 
 const { sinCos } = MathUtil
@@ -113,9 +113,9 @@ class RotationMatrix {
     /**
      * 从惯性-对象旋转向量
      */
-    public rotateInertialToObjectVector3(v: Vectror3) {
+    public rotateInertialToObjectVector3(v: Vector3) {
         let { x, y, z } = v
-        return new Vectror3(
+        return new Vector3(
             this.m11 * x + this.m21 * y + this.m31 * z,
             this.m12 * x + this.m22 * y + this.m32 * z,
             this.m13 * x + this.m23 * y + this.m33 * z
@@ -124,9 +124,9 @@ class RotationMatrix {
     /**
      * 从对象-惯性旋转向量
      */
-    public rotateObjectToInertialVector3(v: Vectror3) {
+    public rotateObjectToInertialVector3(v: Vector3) {
         let { x, y, z } = v
-        return new Vectror3(
+        return new Vector3(
             this.m11 * x + this.m12 * y + this.m13 * z,
             this.m21 * x + this.m22 * y + this.m23 * z,
             this.m31 * x + this.m32 * y + this.m33 * z

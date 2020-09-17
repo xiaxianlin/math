@@ -1,4 +1,4 @@
-import Vectror3 from './Vector3.ts'
+import Vector3 from './Vector3.ts'
 import EulerAngles from './EulerAngles.ts'
 import RotationMatrix from './RotationMatrix.ts'
 import Quaternion from './Quaternion.ts'
@@ -80,7 +80,7 @@ class Matrix4x3 {
 
         return r
     }
-    public multiWithVector3(p: Vectror3) {}
+    public multiWithVector3(p: Vector3) {}
 
     public determinant() {
         return (
@@ -119,11 +119,11 @@ class Matrix4x3 {
     }
 
     public getTranslation() {
-        return new Vectror3(this.tx, this.ty, this.tz)
+        return new Vector3(this.tx, this.ty, this.tz)
     }
 
     public getPositionFromParentToLocalMatrix() {
-        return new Vectror3(
+        return new Vector3(
             -(this.tx * this.m11 + this.ty * this.m12 + this.tz * this.m13),
             -(this.tx * this.m21 + this.ty * this.m22 + this.tz * this.m23),
             -(this.tx * this.m31 + this.ty * this.m32 + this.tz * this.m33)
@@ -131,7 +131,7 @@ class Matrix4x3 {
     }
 
     public getPositionFromLocalToParentMatrix() {
-        return new Vectror3(this.tx, this.ty, this.tz)
+        return new Vector3(this.tx, this.ty, this.tz)
     }
 
     /**
@@ -144,7 +144,7 @@ class Matrix4x3 {
     /**
      * 设置平移，参数为向量形式
      */
-    public setTranslation(d: Vectror3) {
+    public setTranslation(d: Vector3) {
         this.tx = d.x
         this.ty = d.y
         this.tz = d.z
@@ -153,7 +153,7 @@ class Matrix4x3 {
     /**
      * 构建矩阵，设置平移
      */
-    public setupTranslation(d: Vectror3) {
+    public setupTranslation(d: Vector3) {
         this.m11 = 1.0
         this.m12 = 0.0
         this.m13 = 0.0
@@ -177,7 +177,7 @@ class Matrix4x3 {
     /**
      * 构建执行子-父空间变换：欧拉角
      */
-    public setupLocalToParentByEulerAngles(pos: Vectror3, orient: EulerAngles) {
+    public setupLocalToParentByEulerAngles(pos: Vector3, orient: EulerAngles) {
         // 创建旋转矩阵
         let orientMatrix = new RotationMatrix()
         orientMatrix.setup(orient)
@@ -189,7 +189,7 @@ class Matrix4x3 {
     /**
      * 构建执行局部-父空间变换：矩阵
      */
-    public setupLocalToParentByRotationMatrix(pos: Vectror3, orient: RotationMatrix) {
+    public setupLocalToParentByRotationMatrix(pos: Vector3, orient: RotationMatrix) {
         // 复制矩阵的旋转部分
         // 旋转矩阵一般为世界-物体矩阵，即父-子关系
         // 因为要求子-父转换，所以要转置
@@ -222,7 +222,7 @@ class Matrix4x3 {
     /**
      * 构建执行父-子空间变换：欧拉角
      */
-    public setupParentToLocalByEulerAngles(pos: Vectror3, orient: EulerAngles) {
+    public setupParentToLocalByEulerAngles(pos: Vector3, orient: EulerAngles) {
         let orientMatrix = new RotationMatrix()
         orientMatrix.setup(orient)
         return this.setupParentToLocalByRotationMatrix(pos, orientMatrix)
@@ -231,7 +231,7 @@ class Matrix4x3 {
     /**
      * 构建执行父-子空间变换：矩阵
      */
-    public setupParentToLocalByRotationMatrix(pos: Vectror3, orient: RotationMatrix) {
+    public setupParentToLocalByRotationMatrix(pos: Vector3, orient: RotationMatrix) {
         // 复制矩阵的旋转部分
         this.m11 = orient.m11
         this.m12 = orient.m12
@@ -317,7 +317,7 @@ class Matrix4x3 {
     /**
      * 构造绕坐标轴旋转的矩阵: 绕任意轴旋转
      */
-    public setupRotateByVector3(axis: Vectror3, theta: number) {
+    public setupRotateByVector3(axis: Vector3, theta: number) {
         if (Math.abs(axis.dot(axis) - 1.0) > 0) {
             throw '旋转轴不是单位向量'
         }
@@ -372,7 +372,7 @@ class Matrix4x3 {
      * 构造沿各坐标轴缩放的矩阵
      * 对于缩放因子k，使用向量Vector3(k,k,k)表示
      */
-    public setupScale(s: Vectror3) {
+    public setupScale(s: Vector3) {
         let { x, y, z } = s
         this.m11 = x
         this.m12 = 0.0
@@ -393,7 +393,7 @@ class Matrix4x3 {
      * 构造沿任意轴缩放的矩阵
      * 旋转轴为单位向量，k为缩放因子
      */
-    public setupScaleAlongAxis(axis: Vectror3, k: number) {
+    public setupScaleAlongAxis(axis: Vector3, k: number) {
         if (Math.abs(axis.dot(axis) - 1.0) > 0) {
             throw '旋转轴不是单位向量'
         }
@@ -465,7 +465,7 @@ class Matrix4x3 {
     /**
      * 构造投影矩阵，投影平面过原点，且垂直于单位向量n
      */
-    public setupProject(n: Vectror3) {
+    public setupProject(n: Vector3) {
         if (Math.abs(n.dot(n) - 1.0) > 0) {
             throw '旋转轴不是单位向量'
         }
@@ -546,7 +546,7 @@ class Matrix4x3 {
      *   3 => 沿z = k平面反射
      * 平移部分置为合适的值，因为k != 0时平移一定会发生的
      */
-    public setupReflectByVector3(n: Vectror3) {
+    public setupReflectByVector3(n: Vector3) {
         if (Math.abs(n.dot(n) - 1.0) > 0) {
             throw '旋转轴不是单位向量'
         }
